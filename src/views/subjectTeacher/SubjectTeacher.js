@@ -86,8 +86,8 @@ const [subjects, setSubjects] = useState([]);
     try {
       const response = await createData(newRow);
       setData([...data, response]);
-      setNewRow({ idSubjectTeacher: '', nameTeacher: '', grade: '', section: '', subject: '', comments: '' });
       setModalIsOpen(false);
+      setNewRow({ idSubjectTeacher: '', nameTeacher: '', grade: '', section: '', subject: '', comments: '' });
       alert('Registrado correctamente');
     } catch (error) {
       console.error('Error al crear datos:', error);
