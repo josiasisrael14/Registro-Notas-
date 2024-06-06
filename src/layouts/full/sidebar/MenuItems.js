@@ -69,6 +69,12 @@ const Menuitems = [
     href: '/subjectTeacher',
   },
   {
+    id: uniqueId(),
+    title: 'Matricula Estudiante',
+    icon: IconCopy,
+    href: '/subjectStudent',
+  },
+  {
     navlabel: true,
     subheader: 'Auth',
   },
