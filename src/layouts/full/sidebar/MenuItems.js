@@ -75,6 +75,12 @@ const Menuitems = [
     href: '/subjectStudent',
   },
   {
+    id: uniqueId(),
+    title: 'Nota Estudiante',
+    icon: IconCopy,
+    href: '/assignNotes',
+  },
+  {
     navlabel: true,
     subheader: 'Auth',
   },

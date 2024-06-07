@@ -22,6 +22,7 @@ const Teacher = Loadable(lazy(() => import('../views/teacher/Teacher')));
 const Student = Loadable(lazy(() => import('../views/student/Student')));
 const SubjectTeacher = Loadable(lazy(() => import('../views/subjectTeacher/SubjectTeacher')));
 const SubjectStudent = Loadable(lazy(() => import('../views/subjectStudent/SubjectStudent')));
+const AssignNotes = Loadable(lazy(() => import('../views/assignNotes/AssignNotes')));
 
 
 
@@ -43,6 +44,7 @@ const Router = [
       { path: '/student', exact: true, element: <Student /> },
       { path: '/subjectTeacher', exact: true, element: <SubjectTeacher /> },
       { path: '/subjectStudent', exact: true, element: <SubjectStudent /> },
+      { path: '/assignNotes', exact: true, element: <AssignNotes /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
