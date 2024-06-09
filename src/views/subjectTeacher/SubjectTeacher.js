@@ -30,6 +30,7 @@ const [subjects, setSubjects] = useState([]);
   const [newRow, setNewRow] = useState({
     idSubjectTeacher: '',
     nameTeacher: '',
+    surnames: '',
     grade: '',
     section: '',
     subject: '',
@@ -78,7 +79,7 @@ const [subjects, setSubjects] = useState([]);
   }, []); // El segundo argumento del useEffect indica que se ejecutará solo una vez, al montar el componente
 
   const handleOpenAddModal = () => {
-    setNewRow({ idSubjectTeacher: '', nameTeacher: '', grade: '', section: '', subject: '', comments: '' });
+    setNewRow({ idSubjectTeacher: '', nameTeacher: '',surnames:'', grade: '', section: '', subject: '', comments: '' });
     setModalIsOpen(true);
   };
 
@@ -87,7 +88,7 @@ const [subjects, setSubjects] = useState([]);
       const response = await createData(newRow);
       setData([...data, response]);
       setModalIsOpen(false);
-      setNewRow({ idSubjectTeacher: '', nameTeacher: '', grade: '', section: '', subject: '', comments: '' });
+      setNewRow({ idSubjectTeacher: '', nameTeacher: '',surnames:'', grade: '', section: '', subject: '', comments: '' });
       alert('Registrado correctamente');
     } catch (error) {
       console.error('Error al crear datos:', error);
@@ -122,6 +123,7 @@ const [subjects, setSubjects] = useState([]);
       setNewRow({
         idSubjectTeacher:responseData.idSubjectTeacher,
         nameTeacher:responseData.nameTeacher,
+        surnames:responseData.surnames,
         grade:responseData.grade,
         section:responseData.section,
         subject:responseData.subject,
@@ -149,6 +151,11 @@ const [subjects, setSubjects] = useState([]);
     {
       name: 'Nombre',
       selector: row => row.nameTeacher,
+      sortable: true,
+    },
+    {
+      name: 'Apellidos',
+      selector: row => row.surnames,
       sortable: true,
     },
     {
@@ -202,10 +209,10 @@ const [subjects, setSubjects] = useState([]);
           value={newRow.nameTeacher}
           onChange={(e) => setNewRow({ ...newRow, nameTeacher: e.target.value })}
         >
-          <option value="">{newRow.idSubjectTeacher?newRow.nameTeacher:"Seleccione un profesor"}</option>
+          <option value="">{newRow.idSubjectTeacher?newRow.nameTeacher + " " + newRow.surnames:"Seleccione un profesor"}</option>
           {teachers.map(teacher => (
             <option key={teacher.idTeacher} value={teacher.idTeacher}>
-              {teacher.name}
+              {teacher.name + " " + teacher.surnames}
             </option>
           ))}
         </Form.Control>
