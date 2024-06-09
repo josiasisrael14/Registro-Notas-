@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 const MyComponent = () => {
     const [data, setData] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [newRow, setNewRow] = useState({ note_id: '',nameStudent: '',nameTeacher:'',nameStuff:'',grade: '',specificationLevel: '',section: '',note:'',date:'',comments:''});
+    const [newRow, setNewRow] = useState({ note_id: '',nameTeacher:'',lastNameTeacher:'',nameStudent: '',lastName:'',nameStuff:'',grade: '',specificationLevel: '',section: '',note:'',date:'',comments:''});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,13 +40,23 @@ const MyComponent = () => {
           sortable: true,
         },
         {
-          name: 'Estudiante',
-          selector: row => row.nameStudent,
+          name: 'Profesor',
+          selector: row => row.nameTeacher,
           sortable: true,
         },
         {
-            name: 'Profesor',
-            selector: row => row.nameTeacher,
+          name: 'apellidos',
+          selector: row => row.lastNameTeacher,
+          sortable: true,
+        },
+        {
+            name: 'Estudiante',
+            selector: row => row.nameStudent,
+            sortable: true,
+          },
+          {
+            name: 'apellidos',
+            selector: row => row.lastName,
             sortable: true,
           },
           {

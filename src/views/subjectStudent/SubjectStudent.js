@@ -9,13 +9,13 @@ import Form from 'react-bootstrap/Form';
 const MyComponent = () => {
     const [data, setData] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [newRow, setNewRow] = useState({ idSubjectStudent: '',nameStudent: '',grade: '',specificationLevel: '',section: ''});
+    const [newRow, setNewRow] = useState({ idSubjectStudent: '',nameStudent: '',lastName:'', grade: '',specificationLevel: '',section: ''});
 
     useEffect(() => {
         const fetchData = async () => {
           try {
             const responseData = await getWhereAllSubjectStudent();
-            console.log(responseData);
+            console.log("ver respuesta de listar todo ",responseData);
     
             // Ordenar los datos por idStuff
             const sortedData = responseData.sort((a, b) => {
@@ -42,6 +42,11 @@ const MyComponent = () => {
         {
           name: 'nombre',
           selector: row => row.nameStudent,
+          sortable: true,
+        },
+        {
+          name: 'apellidos',
+          selector: row => row.lastName,
           sortable: true,
         },
         {
