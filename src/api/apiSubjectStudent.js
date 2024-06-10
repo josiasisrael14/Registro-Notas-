@@ -14,9 +14,9 @@ export const getWhereAllSubjectStudent = () => {
     })
   }
 
-  export const createData = (newRow) => {
+  export const createTuitionStudent = (newRow) => {
     return new Promises((resolve, reject) => {
-      axios.post(`http://127.0.0.1:8080/subjectTeacher`, newRow)
+      axios.post(`http://127.0.0.1:8080/subjectStudent`, newRow)
         .then(data => { 
           console.log('data', data);
           resolve(data.data);
