@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAllTeacher} from 'src/api/apiTeacher';
+import { getWhereAllTeacher,createDataTeacher} from 'src/api/apiTeacher';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -32,6 +32,23 @@ const MyComponent = () => {
     
         fetchData();
       }, []); // El segundo argumento del useEffect indica que se ejecutará solo una vez, al montar el componente
+
+      const handleOpenAddModal = () => {
+        setNewRow({ idTeacher: '', name: '',surnames:'', cellPone:''});
+        setModalIsOpen(true);
+      };
+
+      const handleAdd = async () => {
+        try {
+          const response = await createDataTeacher(newRow);
+          setData([...data, response]);
+          setNewRow({ idTeacher: '', name: '' ,surnames:'', cellPone:''});
+          setModalIsOpen(false); // Cerrar el modal después de agregar
+          alert('Registrado correctamente');
+        } catch (error) {
+          console.error('Error al crear datos:', error);
+        }
+      };
 
       const columns = [
         {
@@ -69,7 +86,60 @@ const MyComponent = () => {
       return (
         <div>
         <h1>lista de profesores</h1>
-        <button>Crear</button>
+        <button onClick={handleOpenAddModal}>Crear Nuevo Profesor</button>
+      <Modal show={modalIsOpen} onHide={() => setModalIsOpen(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{newRow.idTeacher?'Editar Profesor': 'Crear Nueva Profesor'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+          <Form.Group controlId="formName">
+              <Form.Label>Id</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="id"
+                value={newRow.idTeacher}
+                onChange={(e) => setNewRow({ ...newRow, idTeacher: e.target.value })}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formName">
+              <Form.Label>Profesor</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre Profesor"
+                value={newRow.name}
+                onChange={(e) => setNewRow({ ...newRow, name: e.target.value })}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formName">
+              <Form.Label>Apellidos</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Apellidos"
+                value={newRow.surnames}
+                onChange={(e) => setNewRow({ ...newRow, surnames: e.target.value })}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formName">
+              <Form.Label>celular</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="celular"
+                value={newRow.cellPone}
+                onChange={(e) => setNewRow({ ...newRow, cellPone: e.target.value })}
+              />
+            </Form.Group>
+
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalIsOpen(false)}>Cancelar</Button>
+          <Button variant="primary" onClick={newRow.idTeacher? "":handleAdd}>{newRow.idTeacher?'Guardar Cambios':'Agregar'}</Button>
+        </Modal.Footer>
+      </Modal>
         <DataTable
         columns={columns}
         data={data}
