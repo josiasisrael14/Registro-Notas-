@@ -28,6 +28,19 @@ export const getWhereAllSubjectStudent = () => {
     });
   }
 
+  export const getWhereSubjectStudent = (id) => {
+    return new Promises((resolve, reject) => {
+      return axios.get(`http://127.0.0.1:8080/subjectStudent/id?idSubjectStudent=${id}`)
+      .then(data => { 
+        console.log('data', data)
+        resolve(data.data) 
+      }).catch(error => {
+        console.log('error', error)
+        reject(error)
+      })
+    })
+  }
+
   export const updateSubjectTeacher = (updatedRow) => {
     return new Promises((resolve, reject) => {
     return axios.patch(`http://127.0.0.1:8080/subjectTeacher/update`, updatedRow)
