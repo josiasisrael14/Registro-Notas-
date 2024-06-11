@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAllSection} from 'src/api/apiSection';
+import { getWhereAllSection,createDataSection} from 'src/api/apiSection';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -33,6 +33,23 @@ const MyComponent = () => {
         fetchData();
       }, []); // El segundo argumento del useEffect indica que se ejecutará solo una vez, al montar el componente
 
+      const handleOpenAddModal = () => {
+        setNewRow({ idSection: '', nameSection: ''});
+        setModalIsOpen(true);
+      };
+
+      const handleAdd = async () => {
+        try {
+          const response = await createDataSection(newRow);
+          setData([...data, response]);
+          setNewRow({ idSection: '', nameSection: '' });
+          setModalIsOpen(false); // Cerrar el modal después de agregar
+          alert('Registrado correctamente');
+        } catch (error) {
+          console.error('Error al crear datos:', error);
+        }
+      };
+
       const columns = [
         {
           name: 'ID',
@@ -59,7 +76,39 @@ const MyComponent = () => {
       return (
         <div>
         <h1>lista de secciones</h1>
-        <button>Crear Nueva seccion</button>
+        <button onClick={handleOpenAddModal}>Crear Nueva Seccion</button>
+      <Modal show={modalIsOpen} onHide={() => setModalIsOpen(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{newRow.idSection?'Editar Sesion': 'Crear Nueva Seccion'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+          <Form.Group controlId="formName">
+              <Form.Label>Id</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="id"
+                value={newRow.idSection}
+                onChange={(e) => setNewRow({ ...newRow, idSection: e.target.value })}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formName">
+              <Form.Label>Seccion</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre Seccion"
+                value={newRow.nameSection}
+                onChange={(e) => setNewRow({ ...newRow, nameSection: e.target.value })}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalIsOpen(false)}>Cancelar</Button>
+          <Button variant="primary" onClick={newRow.idSection? "":handleAdd}>{newRow.idSection?'Guardar Cambios':'Agregar'}</Button>
+        </Modal.Footer>
+      </Modal>
         <DataTable
         columns={columns}
         data={data}
