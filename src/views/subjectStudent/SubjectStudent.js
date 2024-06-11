@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAllSubjectStudent,createTuitionStudent} from 'src/api/apiSubjectStudent';
+import { getWhereAllSubjectStudent,createTuitionStudent,getWhereSubjectStudent} from 'src/api/apiSubjectStudent';
 import {getWhereAllSection}from 'src/api/apiSection';
 import {getWhereAllGrade}from 'src/api/apiGrade';
 import {getWhereAll}from 'src/api/apiStudent';
@@ -73,6 +73,37 @@ const MyComponent = () => {
         }
       };
 
+      const getWhereId = async (id) => {
+        try {
+        //const id =2;
+          const responseData = await getWhereSubjectStudent(id);
+    
+          console.log(responseData);
+          console.log('Datos de la API:', data);
+    
+          setModalIsOpen(true);
+    
+          setNewRow({
+            idSubjectStudent:responseData.idSubjectStudent,
+            nameStudent:responseData.nameStudent,
+            lastName:responseData.lastName,
+            grade:responseData.grade,
+            specificationLevel:responseData.specificationLevel,
+            section:responseData.section,
+          });
+    
+          console.log("ver si se muestra los datos a editar",newRow)
+    
+          // Asegurarse de que el estado se actualice antes de abrir el modal
+          setTimeout(() => {
+            setModalIsOpen(true);
+          }, 0);
+          // Aquí puedes manejar los datos como desees
+        } catch (error) {
+          console.error('Error al obtener datos de la API:', error);
+        }
+      };
+
 
       const columns = [
         {
@@ -111,7 +142,7 @@ const MyComponent = () => {
           cell: row => (
             <>
                 <>
-                  <button>Editar</button>
+                <button onClick={() => getWhereId(row.idSubjectStudent)}>Editar</button>
                   <button>Eliminar</button>
                 </>
             </>
@@ -151,7 +182,7 @@ const MyComponent = () => {
           value={newRow.grade}
           onChange={(e) => setNewRow({ ...newRow, grade: e.target.value })}
         >
-          <option value="">{newRow.idSubjectStudent?newRow.grade:"Seleccione un grado"}</option>
+          <option value="">{newRow.idSubjectStudent?newRow.grade + " " + newRow.specificationLevel :"Seleccione un grado"}</option>
           {grades.map(grade => (
             <option key={grade.idDegree} value={grade.idDegree}>
               {grade.nameDegree + " " + grade.specificLevel}
