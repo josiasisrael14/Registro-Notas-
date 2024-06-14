@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAllSection,createDataSection} from 'src/api/apiSection';
+import { getWhereAllSection,createDataSection,getWhereSection} from 'src/api/apiSection';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -50,6 +50,26 @@ const MyComponent = () => {
         }
       };
 
+      const getWhereId = async (id) => {
+        try {
+        //const id =2;
+          const responseData = await getWhereSection(id);
+    
+          console.log(responseData);
+          console.log('Datos de la API:', data);
+    
+          setModalIsOpen(true);
+    
+          setNewRow({
+            idSection:responseData.idSection,
+            nameSection:responseData.nameSection
+          });
+          // Aquí puedes manejar los datos como desees
+        } catch (error) {
+          console.error('Error al obtener datos de la API:', error);
+        }
+      };
+
       const columns = [
         {
           name: 'ID',
@@ -66,7 +86,7 @@ const MyComponent = () => {
           cell: row => (
             <>
                 <>
-                  <button>Editar</button>
+                <button onClick={() => getWhereId(row.idSection)}>Editar</button>
                   <button>Eliminar</button>
                 </>
             </>
