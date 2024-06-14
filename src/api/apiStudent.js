@@ -13,3 +13,17 @@ export const getWhereAll = () => {
       })
     })
   }
+
+  export const createDataStudent = (newRow) => {
+    return new Promises((resolve, reject) => {
+      axios.post(`http://127.0.0.1:8080/student`, newRow)
+        .then(data => { 
+          console.log('data', data);
+          resolve(data.data);
+        })
+        .catch(error => {
+          console.log('error', error);
+          reject(error);
+        });
+    });
+  }
