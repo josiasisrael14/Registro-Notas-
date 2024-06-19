@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAll,createDataStudent} from 'src/api/apiStudent';
+import { getWhereAll,createDataStudent,getWhereStudent} from 'src/api/apiStudent';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -51,6 +51,31 @@ const MyComponent = () => {
         }
       };
 
+      const getWhereId = async (id) => {
+        try {
+        //const id =2;
+          const responseData = await getWhereStudent(id);
+    
+          console.log("ver si funciona",responseData);
+          console.log('ver si me trae data:', responseData);
+    
+          setModalIsOpen(true);
+
+          // Formatear la fecha a YYYY-MM-DD
+          const formattedDate = responseData.birthDate.split('T')[0];
+    
+          setNewRow({
+            studentId:responseData.studentId,
+            nameStudent:responseData.nameStudent,
+            lastName:responseData.lastName,
+            birthDate:formattedDate
+          });
+          // Aquí puedes manejar los datos como desees
+        } catch (error) {
+          console.error('Error al obtener datos de la API:', error);
+        }
+      };
+
       const columns = [
         {
           name: 'ID',
@@ -77,7 +102,7 @@ const MyComponent = () => {
           cell: row => (
             <>
                 <>
-                  <button>Editar</button>
+                <button onClick={() => getWhereId(row.studentId)}>Editar</button>
                   <button>Eliminar</button>
                 </>
             </>
