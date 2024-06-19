@@ -40,3 +40,17 @@ export const getWhereAllGrade = () => {
       })
     })
   }
+
+  export const updateGrade = (updatedRow) => {
+    return new Promises((resolve, reject) => {
+    return axios.patch(`http://127.0.0.1:8080/degree/update`, updatedRow)
+        .then(response => {
+          console.log('data', response);
+          resolve(response.data);
+        })
+        .catch(error => {
+          console.log('error', error);
+          reject(error);
+        });
+    });
+  };
