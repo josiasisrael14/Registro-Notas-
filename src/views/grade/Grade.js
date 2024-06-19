@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAllGrade,createDataGrade,getWhereGrade} from 'src/api/apiGrade';
+import { getWhereAllGrade,createDataGrade,getWhereGrade,updateGrade} from 'src/api/apiGrade';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -68,6 +68,21 @@ const MyComponent = () => {
           // Aquí puedes manejar los datos como desees
         } catch (error) {
           console.error('Error al obtener datos de la API:', error);
+        }
+      };
+
+      const handleEdit = async (e) => {
+        e.preventDefault();
+        try {
+          const updatedRow = await updateGrade(newRow);
+          const updatedData = data.map(item => 
+            item.idDegree === newRow.idDegree ? updatedRow : item
+          );
+          setData(updatedData);
+          setModalIsOpen(false); // Cerrar el modal después de editar
+          alert('Actualizado correctamente');
+        } catch (error) {
+          console.error('Error al editar datos:', error);
         }
       };
     
@@ -143,7 +158,7 @@ const MyComponent = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setModalIsOpen(false)}>Cancelar</Button>
-          <Button variant="primary" onClick={newRow.idDegree? "":handleAdd}>{newRow.idDegree?'Guardar Cambios':'Agregar'}</Button>
+          <Button variant="primary" onClick={newRow.idDegree? handleEdit:handleAdd}>{newRow.idDegree?'Guardar Cambios':'Agregar'}</Button>
         </Modal.Footer>
       </Modal>
         <DataTable
