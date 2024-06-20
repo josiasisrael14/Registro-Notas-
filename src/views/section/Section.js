@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAllSection,createDataSection,getWhereSection} from 'src/api/apiSection';
+import { getWhereAllSection,createDataSection,getWhereSection,updateSection} from 'src/api/apiSection';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -70,6 +70,21 @@ const MyComponent = () => {
         }
       };
 
+      const handleEdit = async (e) => {
+        e.preventDefault();
+        try {
+          const updatedRow = await updateSection(newRow);
+          const updatedData = data.map(item => 
+            item.idSection === newRow.idSection ? updatedRow : item
+          );
+          setData(updatedData);
+          setModalIsOpen(false); // Cerrar el modal después de editar
+          alert('Actualizado correctamente');
+        } catch (error) {
+          console.error('Error al editar datos:', error);
+        }
+      };
+
       const columns = [
         {
           name: 'ID',
@@ -126,7 +141,7 @@ const MyComponent = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setModalIsOpen(false)}>Cancelar</Button>
-          <Button variant="primary" onClick={newRow.idSection? "":handleAdd}>{newRow.idSection?'Guardar Cambios':'Agregar'}</Button>
+          <Button variant="primary" onClick={newRow.idSection?handleEdit:handleAdd}>{newRow.idSection?'Guardar Cambios':'Agregar'}</Button>
         </Modal.Footer>
       </Modal>
         <DataTable
