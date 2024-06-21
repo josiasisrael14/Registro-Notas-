@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Swal from 'sweetalert2';
-import { getWhereAll,createDataStudent,getWhereStudent} from 'src/api/apiStudent';
+import { getWhereAll,createDataStudent,getWhereStudent,updateStudent} from 'src/api/apiStudent';
 import DataTable from 'react-data-table-component';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -75,6 +75,23 @@ const MyComponent = () => {
           console.error('Error al obtener datos de la API:', error);
         }
       };
+
+      const handleEdit = async (e) => {
+        e.preventDefault();
+        try {
+          const updatedRow = await updateStudent(newRow);
+          const updatedData = data.map(item => 
+            item.studentId === newRow.studentId ? updatedRow : item
+          );
+          setData(updatedData);
+          setModalIsOpen(false); // Cerrar el modal después de editar
+          alert('Actualizado correctamente');
+        } catch (error) {
+          console.error('Error al editar datos:', error);
+        }
+      };
+
+      
 
       const columns = [
         {
@@ -162,7 +179,7 @@ const MyComponent = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setModalIsOpen(false)}>Cancelar</Button>
-          <Button variant="primary" onClick={newRow.studentId? "":handleAdd}>{newRow.studentId?'Guardar Cambios':'Agregar'}</Button>
+          <Button variant="primary" onClick={newRow.studentId?handleEdit:handleAdd}>{newRow.studentId?'Guardar Cambios':'Agregar'}</Button>
         </Modal.Footer>
       </Modal>
         <DataTable
