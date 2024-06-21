@@ -40,3 +40,17 @@ export const getWhereAllTeacher = () => {
       })
     })
   }
+
+  export const updateTeacher = (updatedRow) => {
+    return new Promises((resolve, reject) => {
+    return axios.patch(`http://127.0.0.1:8080/teacher/update`, updatedRow)
+        .then(response => {
+          console.log('data', response);
+          resolve(response.data);
+        })
+        .catch(error => {
+          console.log('error', error);
+          reject(error);
+        });
+    });
+  };
